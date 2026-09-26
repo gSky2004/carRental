@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Car Rental Management System - Full Documentation</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f5f5f5; color: #222; line-height: 1.7; padding: 20px; }
+    .container { max-width: 1100px; margin: 0 auto; background: #fff; padding: 50px 60px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); border-radius: 8px; }
+
+    h1 { font-size: 28px; color: #1a1a2e; border-bottom: 4px solid #fbbf24; padding-bottom: 15px; margin-bottom: 30px; }
+    h2 { font-size: 22px; color: #1a1a2e; margin-top: 40px; margin-bottom: 15px; padding-left: 10px; border-left: 4px solid #059669; }
+    h3 { font-size: 18px; color: #065f46; margin-top: 25px; margin-bottom: 10px; }
+    h4 { font-size: 16px; color: #1e40af; margin-top: 20px; margin-bottom: 8px; }
+
+    p { margin-bottom: 12px; }
+    ul, ol { margin-bottom: 15px; padding-left: 25px; }
+    li { margin-bottom: 6px; }
+
+    .section { margin-bottom: 40px; }
+
+    .step-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 20px; margin: 15px 0; }
+    .step-box h3 { color: #065f46; margin-top: 0; }
+
+    .code-block { background: #1a1a2e; color: #e5e7eb; padding: 15px 20px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas', 'Courier New', monospace; font-size: 14px; line-height: 1.5; margin: 10px 0 20px; }
+    .code-block .comment { color: #6b7280; }
+    .code-block .keyword { color: #fbbf24; }
+
+    .file-card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+    .file-card .file-path { font-family: 'Consolas', monospace; background: #fef3c7; padding: 3px 10px; border-radius: 4px; font-size: 13px; color: #92400e; display: inline-block; margin-bottom: 10px; }
+    .file-card .description { margin-bottom: 10px; color: #4b5563; }
+
+    .req-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+    .req-table th, .req-table td { border: 1px solid #e5e7eb; padding: 10px 15px; text-align: left; }
+    .req-table th { background: #1a1a2e; color: #fff; font-weight: 600; }
+    .req-table tr:nth-child(even) { background: #f9fafb; }
+
+    .note { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 15px; margin: 15px 0; }
+    .note strong { color: #92400e; }
+
+    .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; margin-right: 5px; }
+    .badge-green { background: #d1fae5; color: #065f46; }
+    .badge-blue { background: #dbeafe; color: #1e40af; }
+    .badge-yellow { background: #fef3c7; color: #92400e; }
+
+    .diagram { background: #f0fdf4; border: 2px solid #bbf7d0; border-radius: 12px; padding: 25px; margin: 20px 0; font-family: 'Consolas', monospace; line-height: 2; }
+
+    @media print {
+        body { background: #fff; padding: 0; }
+        .container { box-shadow: none; padding: 30px; }
+        .code-block { break-inside: avoid; }
+        .file-card { break-inside: avoid; }
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>Car Rental Management System - Complete Documentation</h1>
+
+<p>This document explains the entire Car Rental Management System in detail. It covers the project structure, all 5 database tables, OOP concepts used, each file's purpose, and step-by-step instructions to run the system.</p>
+
+<hr style="margin: 30px 0; border: none; border-top: 2px solid #e5e7eb;">
+
+
+<!-- ============================================================ -->
+<!-- SECTION 1: PROJECT OVERVIEW -->
+<!-- ============================================================ -->
+<div class="section">
+
+<h2>1. Project Overview</h2>
+
+<p>This is a <strong>Car Rental Management System</strong> built using the following technologies as required by the assignment:</p>
+
+<table class="req-table">
+    <thead>
+        <tr>
+            <th>Requirement</th>
+            <th>Implementation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Frontend (User Interface)</td>
+            <td>React 18 - A modern JavaScript framework for building user interfaces</td>
+        </tr>
+        <tr>
+            <td>Backend (Spring Boot)</td>
+            <td>Spring Boot 3.2.5 with Java 17 - Provides REST API endpoints</td>
+        </tr>
+        <tr>
+            <td>Database</td>
+            <td>PostgreSQL - Relational database for storing all data</td>
+        </tr>
+        <tr>
+            <td>Database Tables</td>
+            <td>5 tables: branches, customers, cars, rentals, payments</td>
+        </tr>
+        <tr>
+            <td>OOP Concepts</td>
+            <td>Encapsulation, Inheritance, Classes, Objects, Constructors</td>
+        </tr>
+        <tr>
+            <td>CRUD Operations</td>
+            <td>Full Create, Read, Update, Delete on all 5 entities</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>System Purpose:</strong> A car rental company can use this system to manage their fleet of cars, register customers, rent cars to customers, record payments, and manage branch locations. The system provides a clean web interface for all operations.</p>
+
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 2: DATABASE DESIGN (5 TABLES) -->
+<!-- ============================================================ -->
+<div class="section">
+
+<h2>2. Database Design - 5 Tables with Relationships</h2>
+
+<p>The system uses <strong>five (5) database tables</strong> with the following relationships:</p>
+
+<div class="diagram">
++----------------+       +----------------+       +----------------+
+|   branches     |       |     cars       |       |   customers    |
++----------------+       +----------------+       +----------------+
+| id (PK)        |&lt;------| branch_id (FK) |       | id (PK)        |
+| name           |       | id (PK)        |       | first_name     |
+| location       |       | car_name       |       | last_name      |
+| address        |       | plate_number   |       | email          |
+| phone          |       | brand          |       | phone          |
+| created_at     |       | model          |       | license_number |
+| updated_at     |       | manufacture_yr |       | address        |
++----------------+       | rental_price   |       | created_at     |
+                         | status         |       | updated_at     |
+                         | created_at     |       +----------------+
+                         | updated_at     |              |
+                         +----------------+              |
+                               |                         |
+                               | 1                        | 1
+                               |                         |
+                               v                         v
+                         +------------------------------------+
+                         |             rentals                |
+                         +------------------------------------+
+                         | id (PK)                            |
+                         | car_id (FK) ------&gt; cars.id        |
+                         | customer_id (FK) &gt; customers.id    |
+                         | car_name (snapshot)                |
+                         | plate_number (snapshot)            |
+                         | customer_name (snapshot)           |
+                         | customer_phone (snapshot)          |
+                         | pickup_date                        |
+                         | return_date                        |
+                         | rental_days                        |
+                         | price_per_day                      |
+                         | total_cost                         |
+                         | created_at                         |
+                         +------------------------------------+
+                               |
+                               | 1
+                               |
+                               v
+                         +------------------------------------+
+                         |            payments                |
+                         +------------------------------------+
+                         | id (PK)                            |
+                         | rental_id (FK) --&gt; rentals.id      |
+                         | amount                             |
+                         | payment_date                       |
+                         | payment_method                     |
+                         | status                             |
+                         | created_at                         |
+                         | updated_at                         |
+                         +------------------------------------+
+</div>
+
+<h3>Table Relationships:</h3>
+<ol>
+    <li><strong>Branch (1) to Car (N):</strong> One branch can have many cars parked at its location. A car belongs to one branch.</li>
+    <li><strong>Customer (1) to Rental (N):</strong> One customer can rent cars multiple times. Each rental belongs to one customer.</li>
+    <li><strong>Car (1) to Rental (N):</strong> One car can be rented many times over its lifetime. Each rental is for one car.</li>
+    <li><strong>Rental (1) to Payment (1):</strong> Each rental has exactly one payment record. This is a one-to-one relationship.</li>
+</ol>
+
+<h3>Table Details:</h3>
+
+<div class="file-card">
+    <div class="file-path">branches (Table 1)</div>
+    <div class="description">
+        <strong>Columns:</strong> id (PK), name, location, address, phone, created_at, updated_at<br>
+        <strong>Purpose:</strong> Stores rental branch office locations. For example, "Main Branch" in Dar es Salaam and "Arusha Branch" in Arusha.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">customers (Table 2)</div>
+    <div class="description">
+        <strong>Columns:</strong> id (PK), first_name, last_name, email, phone, license_number (unique), address, created_at, updated_at<br>
+        <strong>Purpose:</strong> Stores customer information including their driver's license number for identification.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">cars (Table 3)</div>
+    <div class="description">
+        <strong>Columns:</strong> id (PK), car_name, plate_number (unique), brand, model, manufacture_year, rental_price_per_day, status, branch_id (FK), created_at, updated_at<br>
+        <strong>Purpose:</strong> Stores all cars available for rent. Status can be "Available", "Rented", or "Under Maintenance". Branch_id links to the branch where the car is located.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">rentals (Table 4)</div>
+    <div class="description">
+        <strong>Columns:</strong> id (PK), car_id (FK), customer_id (FK), car_name, plate_number, customer_name, customer_phone, pickup_date, return_date, rental_days, price_per_day, total_cost, created_at<br>
+        <strong>Purpose:</strong> Stores rental transactions. Note: car_name, plate_number, customer_name, customer_phone are "snapshots" - they are copied at the time of rental so the record stays accurate even if car or customer details change later.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">payments (Table 5)</div>
+    <div class="description">
+        <strong>Columns:</strong> id (PK), rental_id (FK), amount, payment_date, payment_method, status, created_at, updated_at<br>
+        <strong>Purpose:</strong> Stores payment records for each rental. Payment methods include CASH, CARD, and MOBILE (mobile money). Status can be PAID, PENDING, or REFUNDED.
+    </div>
+</div>
+
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 3: OOP CONCEPTS DEMONSTRATED -->
+<!-- ============================================================ -->
+<div class="section">
+
+<h2>3. Object-Oriented Programming (OOP) Concepts</h2>
+
+<p>The assignment requires demonstrating OOP concepts. Here is how each concept is implemented:</p>
+
+<h3>3.1 Encapsulation</h3>
+<p>Encapsulation means hiding internal data and only allowing access through public methods. In this project:</p>
+<ul>
+    <li>All entity classes have <strong>private fields</strong> (e.g., <code>private String carName;</code>).</li>
+    <li>Access to these fields is through <strong>public getter and setter methods</strong> (e.g., <code>public String getCarName()</code> and <code>public void setCarName(String carName)</code>).</li>
+    <li>Example from <code>Car.java</code>: The field <code>status</code> is private. To read it, you call <code>getStatus()</code>. To change it, you call <code>setStatus("Rented")</code>.</li>
+    <li>DTO classes also use encapsulation - they hide the data and expose it through getters/setters.</li>
+</ul>
+
+<h3>3.2 Inheritance</h3>
+<p>Inheritance means a child class can reuse fields and methods from a parent class. In this project:</p>
+<ul>
+    <li><strong>BaseEntity</strong> is an abstract parent class that contains common fields: <code>id</code>, <code>createdAt</code>, <code>updatedAt</code>.</li>
+    <li><strong>Car</strong>, <strong>Customer</strong>, <strong>Branch</strong>, and <strong>Payment</strong> all <strong>extend BaseEntity</strong> using the <code>extends</code> keyword.</li>
+    <li>This means Car automatically has id, createdAt, and updatedAt without needing to define them again.</li>
+    <li>BaseEntity also has <code>@PrePersist</code> and <code>@PreUpdate</code> methods that automatically set the timestamps when records are created or modified.</li>
+</ul>
+
+<div class="code-block">
+// BaseEntity.java - PARENT CLASS
+@MappedSuperclass
+public abstract class BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
+    // getters and setters for id, createdAt, updatedAt
+}
+
+// Car.java - CHILD CLASS inherits from BaseEntity
+@Entity
+@Table(name = "cars")
+public class Car extends BaseEntity {
+
+    private String carName;
+    private String plateNumber;
+    // ... other Car-specific fields
+
+    // Car gets id, createdAt, updatedAt FOR FREE from BaseEntity
+}
+</div>
+
+<h3>3.3 Classes and Objects</h3>
+<ul>
+    <li><strong>Classes:</strong> The project has entity classes (Car, Rental, Customer, Payment, Branch), DTO classes (CarDTO, RentalDTO, etc.), service classes, controller classes, and repository interfaces.</li>
+    <li><strong>Objects:</strong> Objects are created using the <code>new</code> keyword, e.g., <code>Car car = new Car();</code> or <code>CarDTO dto = new CarDTO();</code>. Objects are instances of classes.</li>
+</ul>
+
+<h3>3.4 Constructors</h3>
+<ul>
+    <li>Every entity has a <strong>no-argument constructor</strong> (required by JPA): <code>public Car() { }</code></li>
+    <li>Every entity has a <strong>parameterized constructor</strong> for easy object creation: <code>public Car(String carName, String plateNumber, ...)</code></li>
+</ul>
+
+<h3>3.5 Methods</h3>
+<ul>
+    <li>The project uses methods to organize code. For example, <code>CarServiceImpl</code> has methods like <code>findAll()</code>, <code>findById()</code>, <code>save()</code>, <code>update()</code>, <code>delete()</code>, <code>convertToDTO()</code>, and <code>convertToEntity()</code>.</li>
+    <li>Controller methods handle HTTP requests: <code>getAll()</code>, <code>getById()</code>, <code>create()</code>, <code>update()</code>, <code>delete()</code>.</li>
+</ul>
+
+<h3>3.6 Packages</h3>
+<p>The Java code is organized into packages following standard conventions:</p>
+<ul>
+    <li><code>com.oop.carrental</code> - Main application package</li>
+    <li><code>com.oop.carrental.config</code> - Configuration classes (CORS)</li>
+    <li><code>com.oop.carrental.controller</code> - REST controllers</li>
+    <li><code>com.oop.carrental.dto</code> - Data Transfer Objects</li>
+    <li><code>com.oop.carrental.entity</code> - Database entity classes</li>
+    <li><code>com.oop.carrental.exception</code> - Exception handling</li>
+    <li><code>com.oop.carrental.repository</code> - Database access interfaces</li>
+    <li><code>com.oop.carrental.service</code> - Service interfaces</li>
+    <li><code>com.oop.carrental.service.impl</code> - Service implementations</li>
+</ul>
+
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 4: CRUD OPERATIONS -->
+<!-- ============================================================ -->
+<div class="section">
+
+<h2>4. CRUD Operations (Create, Read, Update, Delete)</h2>
+
+<p>Every entity in the system has full CRUD operations. Here is how each operation works:</p>
+
+<table class="req-table">
+    <thead>
+        <tr>
+            <th>Operation</th>
+            <th>HTTP Method</th>
+            <th>API Endpoint</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>C</strong>reate</td>
+            <td>POST</td>
+            <td>/api/cars<br>/api/customers<br>/api/rentals<br>/api/payments<br>/api/branches</td>
+            <td>Adds a new record to the database</td>
+        </tr>
+        <tr>
+            <td><strong>R</strong>ead (All)</td>
+            <td>GET</td>
+            <td>/api/cars<br>/api/customers<br>/api/rentals<br>/api/payments<br>/api/branches</td>
+            <td>Gets all records from the database</td>
+        </tr>
+        <tr>
+            <td><strong>R</strong>ead (One)</td>
+            <td>GET</td>
+            <td>/api/cars/{id}<br>/api/customers/{id}<br>/api/rentals/{id}<br>/api/payments/{id}<br>/api/branches/{id}</td>
+            <td>Gets a single record by its ID</td>
+        </tr>
+        <tr>
+            <td><strong>U</strong>pdate</td>
+            <td>PUT</td>
+            <td>/api/cars/{id}<br>/api/customers/{id}<br>/api/rentals/{id}<br>/api/payments/{id}<br>/api/branches/{id}</td>
+            <td>Updates an existing record</td>
+        </tr>
+        <tr>
+            <td><strong>D</strong>elete</td>
+            <td>DELETE</td>
+            <td>/api/cars/{id}<br>/api/customers/{id}<br>/api/rentals/{id}<br>/api/payments/{id}<br>/api/branches/{id}</td>
+            <td>Removes a record from the database</td>
+        </tr>
+    </tbody>
+</table>
+
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 5: SOFTWARE REQUIREMENTS -->
+<!-- ============================================================ -->
+<div class="section">
+
+<h2>5. Software Requirements</h2>
+
+<p>To run this project, install these programs on your computer:</p>
+
+<table class="req-table">
+    <thead>
+        <tr>
+            <th>Software</th>
+            <th>Version</th>
+            <th>Purpose</th>
+            <th>Download Link</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Java JDK</td>
+            <td>17 or higher</td>
+            <td>Runs the Spring Boot backend</td>
+            <td><a href="https://adoptium.net/">https://adoptium.net/</a></td>
+        </tr>
+        <tr>
+            <td>Node.js</td>
+            <td>18 or higher</td>
+            <td>Runs the React frontend</td>
+            <td><a href="https://nodejs.org/">https://nodejs.org/</a></td>
+        </tr>
+        <tr>
+            <td>PostgreSQL</td>
+            <td>14 or higher</td>
+            <td>The database</td>
+            <td><a href="https://www.postgresql.org/download/">https://www.postgresql.org/download/</a></td>
+        </tr>
+        <tr>
+            <td>VS Code</td>
+            <td>Latest</td>
+            <td>Code editor</td>
+            <td><a href="https://code.visualstudio.com/">https://code.visualstudio.com/</a></td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="note">
+    <strong>Important - PostgreSQL Setup:</strong> After installing PostgreSQL:
+    <ol>
+        <li>Remember the password you set during installation (default username is "postgres").</li>
+        <li>Open <strong>pgAdmin</strong> or command line.</li>
+        <li>Create a database named <strong>carrental_db</strong>.</li>
+        <li>If your PostgreSQL password is different from "postgres", update it in <code>backend/src/main/resources/application.properties</code>.</li>
+    </ol>
+</div>
+
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 6: VERIFY INSTALLATIONS -->
+<!-- ============================================================ -->
+<div class="section">
+
+<h2>6. How to Verify Installations</h2>
+
+<p>Open a terminal (Command Prompt or PowerShell) and run these commands:</p>
+
+<div class="code-block">
+java -version
+</div>
+<p>Expected output: <code>openjdk version "17.0.x"</code></p>
+
+<div class="code-block">
+node -v
+</div>
+<p>Expected output: <code>v18.x.x</code> or higher</p>
+
+<div class="code-block">
+npm -v
+</div>
+<p>Expected output: <code>10.x.x</code> or similar</p>
+
+<div class="code-block">
+psql -U postgres -c "SELECT version();"
+</div>
+<p>Expected output: PostgreSQL version information</p>
+
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 7: PROJECT STRUCTURE -->
+<!-- ============================================================ -->
+<div class="section">
+
+<h2>7. Complete Project Structure</h2>
+
+<div class="code-block">
+CarRental/
+|
++-- backend/                          (Spring Boot - Java 17)
+|   +-- pom.xml                       (Maven: dependencies list)
+|   +-- src/main/
+|       +-- java/com/oop/carrental/
+|       |   +-- CarRentalApplication.java    (Entry point + seed data)
+|       |   +-- config/
+|       |   |   +-- CorsConfig.java          (Allows frontend-backend communication)
+|       |   +-- controller/
+|       |   |   +-- CarController.java       (REST: /api/cars)
+|       |   |   +-- RentalController.java    (REST: /api/rentals)
+|       |   |   +-- CustomerController.java  (REST: /api/customers)
+|       |   |   +-- PaymentController.java   (REST: /api/payments)
+|       |   |   +-- BranchController.java    (REST: /api/branches)
+|       |   +-- dto/
+|       |   |   +-- CarDTO.java
+|       |   |   +-- RentalDTO.java
+|       |   |   +-- CustomerDTO.java
+|       |   |   +-- PaymentDTO.java
+|       |   |   +-- BranchDTO.java
+|       |   +-- entity/
+|       |   |   +-- BaseEntity.java          (Parent: id, createdAt, updatedAt)
+|       |   |   +-- Car.java                 (Table: cars)
+|       |   |   +-- Rental.java              (Table: rentals)
+|       |   |   +-- Customer.java            (Table: customers)
+|       |   |   +-- Payment.java             (Table: payments)
+|       |   |   +-- Branch.java              (Table: branches)
+|       |   +-- exception/
+|       |   |   +-- GlobalExceptionHandler.java
+|       |   |   +-- ResourceNotFoundException.java
+|       |   +-- repository/
+|       |   |   +-- CarRepository.java
+|       |   |   +-- RentalRepository.java
+|       |   |   +-- CustomerRepository.java
+|       |   |   +-- PaymentRepository.java
+|       |   |   +-- BranchRepository.java
+|       |   +-- service/
+|       |   |   +-- CarService.java          (Interface)
+|       |   |   +-- RentalService.java       (Interface)
+|       |   |   +-- CustomerService.java     (Interface)
+|       |   |   +-- PaymentService.java      (Interface)
+|       |   |   +-- BranchService.java       (Interface)
+|       |   |   +-- impl/
+|       |   |       +-- CarServiceImpl.java
+|       |   |       +-- RentalServiceImpl.java
+|       |   |       +-- CustomerServiceImpl.java
+|       |   |       +-- PaymentServiceImpl.java
+|       |   |       +-- BranchServiceImpl.java
+|       |   +-- resources/
+|       |       +-- application.properties   (Database & server config)
+|
++-- frontend/                         (React 18)
+|   +-- package.json                  (Dependencies list)
+|   +-- .env                          (Port: 3004)
+|   +-- public/index.html             (Main HTML page)
+|   +-- src/
+|       +-- index.js                  (React entry point)
+|       +-- api.js                    (Backend API connection)
+|       +-- App.js                    (Main component with tabs)
+|       +-- components/
+|           +-- CarForm.jsx           (Add/Edit car form)
+|           +-- RentalForm.jsx        (Rent a car form)
+|           +-- Receipt.jsx           (Rental receipt)
+|           +-- CustomerPage.jsx      (Customer CRUD page)
+|           +-- PaymentPage.jsx       (Payment CRUD page)
+|           +-- BranchPage.jsx        (Branch CRUD page)
+|
++-- database/
+|   +-- schema.sql                    (Full database schema)
+|
++-- DOCUMENTATION.html                (This file)
+</div>
+
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 8: FILE-BY-FILE EXPLANATION -->
+<!-- ============================================================ -->
+<div class="section">
+
+<h2>8. Detailed File Explanations</h2>
+
+<p>Below is every file in the project with a simple explanation of what it does.</p>
+
+
+<h3 style="color: #1a1a2e; margin-top: 40px; border-bottom: 2px solid #fbbf24; padding-bottom: 8px;">BACKEND - Configuration & Entry Point</h3>
+
+<div class="file-card">
+    <div class="file-path">backend/pom.xml</div>
+    <div class="description">
+        <strong>Purpose:</strong> Maven configuration file that lists all Java libraries (dependencies) needed.<br>
+        <strong>Dependencies:</strong> Spring Boot Web (REST API), Spring Data JPA (database access), PostgreSQL driver, H2 (for testing), Bean Validation.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">backend/src/main/resources/application.properties</div>
+    <div class="description">
+        <strong>Purpose:</strong> Contains server and database settings.<br>
+        <strong>Key settings:</strong> Server runs on port 8085. Database connects to PostgreSQL at localhost:5432/carrental_db. JPA automatically creates/updates tables (ddl-auto=update).
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">backend/src/main/java/com/oop/carrental/CarRentalApplication.java</div>
+    <div class="description">
+        <strong>Purpose:</strong> The main entry point. Contains the <code>main()</code> method that starts the Spring Boot server. Also has an <code>initData()</code> method that adds sample data (2 branches, 2 customers, 3 cars) when the application starts for the first time.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">backend/src/main/java/com/oop/carrental/config/CorsConfig.java</div>
+    <div class="description">
+        <strong>Purpose:</strong> Configures CORS (Cross-Origin Resource Sharing) to allow the React frontend (running on port 3004) to make requests to the backend (running on port 8085). Without this, the browser would block the requests.
+    </div>
+</div>
+
+
+<h3 style="color: #1a1a2e; margin-top: 30px; border-bottom: 2px solid #fbbf24; padding-bottom: 8px;">BACKEND - Entities (Database Tables)</h3>
+
+<div class="file-card">
+    <div class="file-path">entity/BaseEntity.java</div>
+    <div class="description">
+        <strong>OOP Concept: Inheritance (Parent Class)</strong><br>
+        This is an abstract class that provides common fields (id, createdAt, updatedAt) to all other entities. The <code>@PrePersist</code> and <code>@PreUpdate</code> annotations automatically set timestamps when records are created or modified.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">entity/Car.java</div>
+    <div class="description">
+        <strong>Table: cars | Extends: BaseEntity</strong><br>
+        Represents a car in the rental fleet. Fields: carName, plateNumber (unique), brand, model, manufactureYear, rentalPricePerDay, status, branchId (FK to branches table).
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">entity/Customer.java</div>
+    <div class="description">
+        <strong>Table: customers | Extends: BaseEntity</strong><br>
+        Represents a customer who rents cars. Fields: firstName, lastName, email, phone, licenseNumber (unique), address.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">entity/Rental.java</div>
+    <div class="description">
+        <strong>Table: rentals</strong><br>
+        Represents a rental transaction. Links to cars (carId) and customers (customerId). Also stores snapshot data (carName, plateNumber, customerName, customerPhone) so the rental record stays accurate even if the original data changes later.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">entity/Payment.java</div>
+    <div class="description">
+        <strong>Table: payments | Extends: BaseEntity</strong><br>
+        Represents a payment made for a rental. Fields: rentalId (FK), amount, paymentDate, paymentMethod (CASH/CARD/MOBILE), status (PAID/PENDING/REFUNDED).
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">entity/Branch.java</div>
+    <div class="description">
+        <strong>Table: branches | Extends: BaseEntity</strong><br>
+        Represents a rental branch location. Fields: name, location, address, phone.
+    </div>
+</div>
+
+
+<h3 style="color: #1a1a2e; margin-top: 30px; border-bottom: 2px solid #fbbf24; padding-bottom: 8px;">BACKEND - DTOs (Data Transfer Objects)</h3>
+
+<div class="file-card">
+    <div class="file-path">dto/CarDTO.java, CustomerDTO.java, PaymentDTO.java, BranchDTO.java, RentalDTO.java</div>
+    <div class="description">
+        <strong>Purpose:</strong> DTOs are containers that carry data between the frontend and backend. They have the same fields as their corresponding entities but without JPA annotations. This is a security best practice - you never send entity objects directly to the frontend.<br>
+        <strong>OOP Concept:</strong> Encapsulation - all fields are private, accessed through getters and setters.
+    </div>
+</div>
+
+
+<h3 style="color: #1a1a2e; margin-top: 30px; border-bottom: 2px solid #fbbf24; padding-bottom: 8px;">BACKEND - Repositories (Database Access)</h3>
+
+<div class="file-card">
+    <div class="file-path">repository/CarRepository.java, RentalRepository.java, CustomerRepository.java, PaymentRepository.java, BranchRepository.java</div>
+    <div class="description">
+        <strong>Purpose:</strong> These interfaces extend JpaRepository which provides ready-made database methods like <code>findAll()</code>, <code>findById()</code>, <code>save()</code>, <code>deleteById()</code>. Spring Data JPA automatically implements these methods - no SQL code needed.
+    </div>
+</div>
+
+
+<h3 style="color: #1a1a2e; margin-top: 30px; border-bottom: 2px solid #fbbf24; padding-bottom: 8px;">BACKEND - Services (Business Logic)</h3>
+
+<div class="file-card">
+    <div class="file-path">service/*Service.java (interfaces) and service/impl/*ServiceImpl.java (implementations)</div>
+    <div class="description">
+        <strong>Purpose:</strong> Services contain the business logic of the application. They sit between controllers (which handle HTTP requests) and repositories (which handle database access).<br>
+        <strong>Key methods in every ServiceImpl:</strong>
+        <ul>
+            <li><strong>findAll():</strong> Gets all records from DB, converts entities to DTOs using a for-each loop, returns the list.</li>
+            <li><strong>findById():</strong> Finds one record by ID or throws an error if not found.</li>
+            <li><strong>save():</strong> Converts DTO to entity, saves to database, converts back to DTO.</li>
+            <li><strong>update():</strong> Finds existing record, updates its fields, saves back.</li>
+            <li><strong>delete():</strong> Checks if record exists, then deletes it.</li>
+            <li><strong>convertToDTO() / convertToEntity():</strong> Helper methods that copy data between entities and DTOs field by field.</li>
+        </ul>
+        <strong>OOP Concept:</strong> Methods - each operation is a separate, named method that does one specific task.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">service/impl/RentalServiceImpl.java (rentCar method)</div>
+    <div class="description">
+        <strong>Special logic:</strong> The <code>rentCar()</code> method does more than just save a record:
+        <ol>
+            <li>Finds the car in the database.</li>
+            <li>Checks if the car status is "Available". If not, it throws an error.</li>
+            <li>Changes the car status to "Rented" so no one else can rent it.</li>
+            <li>Creates a new rental record with the car details, customer info, dates, and cost.</li>
+            <li>Saves the rental and returns the receipt data.</li>
+        </ol>
+        This demonstrates how business logic works in a real application.
+    </div>
+</div>
+
+
+<h3 style="color: #1a1a2e; margin-top: 30px; border-bottom: 2px solid #fbbf24; padding-bottom: 8px;">BACKEND - Controllers (REST API Endpoints)</h3>
+
+<div class="file-card">
+    <div class="file-path">controller/CarController.java</div>
+    <div class="description">
+        <strong>Endpoints:</strong> GET /api/cars, GET /api/cars/{id}, POST /api/cars, PUT /api/cars/{id}, DELETE /api/cars/{id}<br>
+        <strong>Purpose:</strong> Handles all HTTP requests related to cars. Each method corresponds to one CRUD operation.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">controller/CustomerController.java</div>
+    <div class="description">
+        <strong>Endpoints:</strong> GET /api/customers, GET /api/customers/{id}, POST /api/customers, PUT /api/customers/{id}, DELETE /api/customers/{id}<br>
+        <strong>Purpose:</strong> Handles all customer-related requests.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">controller/RentalController.java</div>
+    <div class="description">
+        <strong>Endpoints:</strong> GET /api/rentals, GET /api/rentals/{id}, POST /api/rentals, PUT /api/rentals/{id}, DELETE /api/rentals/{id}<br>
+        <strong>Purpose:</strong> Handles rental requests. The POST endpoint (rentCar) contains the special business logic for renting a car.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">controller/PaymentController.java</div>
+    <div class="description">
+        <strong>Endpoints:</strong> GET /api/payments, GET /api/payments/{id}, POST /api/payments, PUT /api/payments/{id}, DELETE /api/payments/{id}<br>
+        <strong>Purpose:</strong> Handles payment-related requests.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">controller/BranchController.java</div>
+    <div class="description">
+        <strong>Endpoints:</strong> GET /api/branches, GET /api/branches/{id}, POST /api/branches, PUT /api/branches/{id}, DELETE /api/branches/{id}<br>
+        <strong>Purpose:</strong> Handles branch-related requests.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">exception/ResourceNotFoundException.java</div>
+    <div class="description">
+        <strong>Purpose:</strong> A custom exception class. When code tries to find a record that doesn't exist (e.g., car with ID 100), it throws this exception with a message like "Car not found with id: 100".
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">exception/GlobalExceptionHandler.java</div>
+    <div class="description">
+        <strong>Purpose:</strong> Catches all exceptions thrown by the application and returns proper HTTP error responses to the frontend. For example, if a car is not found, it returns a 404 status with an error message.
+    </div>
+</div>
+
+
+<h3 style="color: #1a1a2e; margin-top: 40px; border-bottom: 2px solid #fbbf24; padding-bottom: 8px;">FRONTEND - React Files</h3>
+
+<div class="file-card">
+    <div class="file-path">frontend/package.json</div>
+    <div class="description">
+        <strong>Purpose:</strong> Lists frontend dependencies (React, ReactDOM, Axios) and scripts (npm start, npm run build).
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">frontend/.env</div>
+    <div class="description">
+        <strong>Purpose:</strong> Sets the frontend port to 3004 to avoid conflicts.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">frontend/public/index.html</div>
+    <div class="description">
+        <strong>Purpose:</strong> The main HTML page. Contains a single &lt;div id="root"&gt; where React renders the entire application.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">frontend/src/index.js</div>
+    <div class="description">
+        <strong>Purpose:</strong> The React entry point. It finds the "root" div and renders the App component inside it.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">frontend/src/api.js</div>
+    <div class="description">
+        <strong>Purpose:</strong> Defines all API calls to the backend. Functions include findAllCars, saveCar, updateCar, deleteCar, rentCar, findAllCustomers, saveCustomer, etc. Each function uses Axios to make HTTP requests.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">frontend/src/App.js</div>
+    <div class="description">
+        <strong>Purpose:</strong> The main application component. Features:
+        <ul>
+            <li><strong>Navigation tabs:</strong> Cars, Rentals, Customers, Payments, Branches</li>
+            <li><strong>Cars tab:</strong> Shows statistics (total, available, rented), search bar, car cards with Rent/Edit/Delete buttons</li>
+            <li><strong>Rentals tab:</strong> Shows a list of all rental records</li>
+            <li><strong>Customers, Payments, Branches tabs:</strong> Display the respective page components with full CRUD</li>
+        </ul>
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">components/CarForm.jsx</div>
+    <div class="description">
+        <strong>Purpose:</strong> A form to add a new car or edit an existing one. Fields: car name, plate number, brand (dropdown), model, year, price, status. Pre-fills fields when editing.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">components/RentalForm.jsx</div>
+    <div class="description">
+        <strong>Purpose:</strong> A form for renting a car to a customer. Fields: customer name, phone, pickup date, return date. Automatically calculates rental days and total cost when dates are entered.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">components/Receipt.jsx</div>
+    <div class="description">
+        <strong>Purpose:</strong> Shows a receipt popup after a successful rental. Displays receipt number, car details, customer info, rental period, and total cost. Has Print and Close buttons.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">components/CustomerPage.jsx</div>
+    <div class="description">
+        <strong>Purpose:</strong> Full CRUD page for managing customers. Shows a list of customers with Edit/Delete buttons. Has a form to add/edit customers (first name, last name, email, phone, license number, address).
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">components/PaymentPage.jsx</div>
+    <div class="description">
+        <strong>Purpose:</strong> Full CRUD page for managing payments. Shows a list of payments with status badges. Has a form to add/edit payments (rental ID, amount, date, method, status).
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">components/BranchPage.jsx</div>
+    <div class="description">
+        <strong>Purpose:</strong> Full CRUD page for managing branches. Shows a list of branches with Edit/Delete buttons. Has a form to add/edit branches (name, location, address, phone).
+    </div>
+</div>
+
+
+<h3 style="color: #1a1a2e; margin-top: 40px; border-bottom: 2px solid #fbbf24; padding-bottom: 8px;">DATABASE</h3>
+
+<div class="file-card">
+    <div class="file-path">database/schema.sql</div>
+    <div class="description">
+        <strong>Purpose:</strong> Contains SQL commands to create the entire database structure. Creates all 5 tables (branches, customers, cars, rentals, payments) with proper foreign key constraints. Also includes INSERT statements for sample data.
+    </div>
+</div>
+
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 9: HOW TO RUN THE PROJECT -->
+<!-- ============================================================ -->
+<div class="section">
+
+<h2>9. Step-by-Step Guide: Running the Project in VS Code</h2>
+
+<div class="step-box">
+<h3>Step 1: Set Up PostgreSQL Database</h3>
+<ol>
+    <li>Open pgAdmin or terminal.</li>
+    <li>Create a database called <strong>carrental_db</strong>:<br>
+        <code>CREATE DATABASE carrental_db;</code>
+    </li>
+    <li>Make sure your PostgreSQL username is "postgres" and password is "postgres". If different, edit <code>backend/src/main/resources/application.properties</code>.</li>
+    <li>(Optional) Run the <code>database/schema.sql</code> file to create tables manually, though Spring Boot will auto-create them.</li>
+</ol>
+</div>
+
+<div class="step-box">
+<h3>Step 2: Open Project in VS Code</h3>
+<ol>
+    <li>Open VS Code.</li>
+    <li>Click <strong>File</strong> &gt; <strong>Open Folder</strong>.</li>
+    <li>Select the project folder (the one with "backend", "frontend", "database" folders).</li>
+    <li>Open two terminals: <strong>Terminal</strong> &gt; <strong>New Terminal</strong> (do this twice).</li>
+</ol>
+</div>
+
+<div class="step-box">
+<h3>Step 3: Start the Backend (Terminal 1)</h3>
+<ol>
+    <li>In Terminal 1: <code>cd backend</code></li>
+    <li>Run: <code>.\mvnw spring-boot:run</code></li>
+    <li>Wait until you see: <code>Started CarRentalApplication in X seconds</code></li>
+    <li>Do NOT close this terminal. The backend must keep running.</li>
+</ol>
+<div class="note">
+    <strong>Note:</strong> The first run downloads many libraries. This may take a few minutes. Ensure PostgreSQL is running before starting the backend.
+</div>
+</div>
+
+<div class="step-box">
+<h3>Step 4: Start the Frontend (Terminal 2)</h3>
+<ol>
+    <li>In Terminal 2: <code>cd frontend</code></li>
+    <li>Run: <code>npm install</code> (only needed the first time)</li>
+    <li>Run: <code>npm start</code></li>
+    <li>Your browser will automatically open to <strong>http://localhost:3004</strong></li>
+</ol>
+</div>
+
+<div class="step-box">
+<h3>Step 5: Using the Application</h3>
+<p>The frontend has navigation tabs at the top:</p>
+
+<h4>Cars Tab</h4>
+<ul>
+    <li>View all cars with their status (Available/Rented)</li>
+    <li>Click <strong>Add Rental Car</strong> to add a new car</li>
+    <li>Click <strong>Rent</strong> on an available car to open the rental form</li>
+    <li>Use <strong>Edit</strong> or <strong>Delete</strong> buttons to manage cars</li>
+    <li>Use the search bar to filter cars by name, brand, or plate</li>
+</ul>
+
+<h4>Rentals Tab</h4>
+<ul>
+    <li>View all rental transactions with customer and car details</li>
+</ul>
+
+<h4>Customers Tab</h4>
+<ul>
+    <li>View, add, edit, and delete customers</li>
+    <li>Fields: first name, last name, email, phone, license number, address</li>
+</ul>
+
+<h4>Payments Tab</h4>
+<ul>
+    <li>View, add, edit, and delete payment records</li>
+    <li>Select payment method (Cash, Card, Mobile Money)</li>
+    <li>Set payment status (Paid, Pending, Refunded)</li>
+</ul>
+
+<h4>Branches Tab</h4>
+<ul>
+    <li>View, add, edit, and delete branch locations</li>
+    <li>Fields: branch name, location, address, phone</li>
+</ul>
+</div>
+
+<div class="step-box">
+<h3>Step 6: Stopping the Application</h3>
+<ul>
+    <li>In each terminal, press <strong>Ctrl + C</strong> to stop the running process.</li>
+    <li>Or simply close VS Code.</li>
+</ul>
+</div>
+
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 10: TROUBLESHOOTING -->
+<!-- ============================================================ -->
+<div class="section">
+
+<h2>10. Common Problems and Solutions</h2>
+
+<div class="file-card">
+    <div class="file-path">Problem: "java is not recognized"</div>
+    <div class="description">
+        <strong>Solution:</strong> Java JDK is not installed or not in PATH. <a href="https://adoptium.net/">Download Java 17</a>, install it, and restart your computer.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">Problem: "'node' is not recognized"</div>
+    <div class="description">
+        <strong>Solution:</strong> Node.js is not installed. <a href="https://nodejs.org/">Download Node.js 18+</a> and install it.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">Problem: "Connection refused" or "Cannot connect to database"</div>
+    <div class="description">
+        <strong>Solution:</strong> PostgreSQL is not running. Start PostgreSQL service. On Windows: Search for "Services", find "postgresql", and click "Start". Also verify the database "carrental_db" exists.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">Problem: "Port 8085 already in use"</div>
+    <div class="description">
+        <strong>Solution:</strong> Another program is using port 8085. Change the port in <code>application.properties</code>: <code>server.port=8086</code>. Also update the port in <code>frontend/src/api.js</code>.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">Problem: "Failed to fetch cars. Is the server running?"</div>
+    <div class="description">
+        <strong>Solution:</strong> The backend is not running or the frontend cannot reach it. Make sure the backend terminal is still running. Check that <code>api.js</code> uses the correct backend URL (http://localhost:8085).
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">Problem: Maven build fails with download errors</div>
+    <div class="description">
+        <strong>Solution:</strong> Check your internet connection. Try running <code>.\mvnw clean</code> then <code>.\mvnw spring-boot:run</code> again.
+    </div>
+</div>
+
+<div class="file-card">
+    <div class="file-path">Problem: "Database 'carrental_db' does not exist"</div>
+    <div class="description">
+        <strong>Solution:</strong> Create the database in PostgreSQL. Open pgAdmin or terminal and run: <code>CREATE DATABASE carrental_db;</code>
+    </div>
+</div>
+
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 11: ASSIGNMENT REQUIREMENTS CHECKLIST -->
+<!-- ============================================================ -->
+<div class="section">
+
+<h2>11. Assignment Requirements Checklist</h2>
+
+<table class="req-table">
+    <thead>
+        <tr>
+            <th>Requirement</th>
+            <th>Status</th>
+            <th>Where Implemented</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Frontend (User Interface)</td>
+            <td><span class="badge badge-green">Done</span></td>
+            <td>React frontend in frontend/ folder</td>
+        </tr>
+        <tr>
+            <td>Backend (Spring Boot)</td>
+            <td><span class="badge badge-green">Done</span></td>
+            <td>Java Spring Boot in backend/ folder</td>
+        </tr>
+        <tr>
+            <td>Database (PostgreSQL)</td>
+            <td><span class="badge badge-green">Done</span></td>
+            <td>PostgreSQL configuration in application.properties</td>
+        </tr>
+        <tr>
+            <td>5 Database Tables</td>
+            <td><span class="badge badge-green">Done</span></td>
+            <td>branches, customers, cars, rentals, payments</td>
+        </tr>
+        <tr>
+            <td>Table Relationships</td>
+            <td><span class="badge badge-green">Done</span></td>
+            <td>Foreign keys: branch_id, car_id, customer_id, rental_id</td>
+        </tr>
+        <tr>
+            <td>Encapsulation</td>
+            <td><span class="badge badge-green">Done</span></td>
+            <td>Private fields with public getters/setters</td>
+        </tr>
+        <tr>
+            <td>Inheritance</td>
+            <td><span class="badge badge-green">Done</span></td>
+            <td>BaseEntity as parent, Car/Customer/Branch/Payment extend it</td>
+        </tr>
+        <tr>
+            <td>Classes and Objects</td>
+            <td><span class="badge badge-green">Done</span></td>
+            <td>Entity classes, DTO classes, Service classes, Controller classes</td>
+        </tr>
+        <tr>
+            <td>Constructors</td>
+            <td><span class="badge badge-green">Done</span></td>
+            <td>No-arg constructors and parameterized constructors</td>
+        </tr>
+        <tr>
+            <td>Getters and Setters</td>
+            <td><span class="badge badge-green">Done</span></td>
+            <td>Every entity and DTO has getters and setters</td>
+        </tr>
+        <tr>
+            <td>Methods</td>
+            <td><span class="badge badge-green">Done</span></td>
+            <td>Service methods (findAll, save, update, delete, convertToDTO, etc.)</td>
+        </tr>
+        <tr>
+            <td>Packages</td>
+            <td><span class="badge badge-green">Done</span></td>
+            <td>config, controller, dto, entity, exception, repository, service, service.impl</td>
+        </tr>
+        <tr>
+            <td>CRUD - Create</td>
+            <td><span class="badge badge-green">Done</span></td>
+            <td>POST endpoints for all 5 entities</td>
+        </tr>
+        <tr>
+            <td>CRUD - Read</td>
+            <td><span class="badge badge-green">Done</span></td>
+            <td>GET endpoints for all 5 entities</td>
+        </tr>
+        <tr>
+            <td>CRUD - Update</td>
+            <td><span class="badge badge-green">Done</span></td>
+            <td>PUT endpoints for all 5 entities</td>
+        </tr>
+        <tr>
+            <td>CRUD - Delete</td>
+            <td><span class="badge badge-green">Done</span></td>
+            <td>DELETE endpoints for all 5 entities</td>
+        </tr>
+        <tr>
+            <td>Fully functional system</td>
+            <td><span class="badge badge-green">Done</span></td>
+            <td>Complete frontend-backend-database integration</td>
+        </tr>
+    </tbody>
+</table>
+
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SECTION 12: SUMMARY -->
+<!-- ============================================================ -->
+<div class="section">
+
+<h2>12. Summary</h2>
+
+<p>This Car Rental Management System is a complete, fully-functional web application that meets all assignment requirements:</p>
+
+<table class="req-table">
+    <thead>
+        <tr>
+            <th>Layer</th>
+            <th>Technology</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Frontend</td>
+            <td>React 18</td>
+            <td>5 tabs: Cars, Rentals, Customers, Payments, Branches</td>
+        </tr>
+        <tr>
+            <td>Backend</td>
+            <td>Spring Boot 3.2.5 / Java 17</td>
+            <td>5 controllers, 5 services, 5 repositories, 5 DTOs</td>
+        </tr>
+        <tr>
+            <td>Database</td>
+            <td>PostgreSQL</td>
+            <td>5 tables with foreign key relationships</td>
+        </tr>
+        <tr>
+            <td>OOP Concepts</td>
+            <td>Encapsulation, Inheritance</td>
+            <td>BaseEntity parent class, private fields with getters/setters</td>
+        </tr>
+        <tr>
+            <td>CRUD</td>
+            <td>Full CRUD</td>
+            <td>Create, Read, Update, Delete on all entities</td>
+        </tr>
+    </tbody>
+</table>
+
+<p style="margin-top: 30px;"><strong>End of Documentation</strong></p>
+
+</div>
+
+</div>
+
+</body>
+</html>
