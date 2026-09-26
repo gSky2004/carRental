@@ -1,6 +1,6 @@
 # Car Rental Management System
 
-A full-stack web application for managing car rental operations built with Spring Boot 3.2.5 and React.
+A full-stack web application for managing car rental operations built with the **PERN stack (PostgreSQL, Express, React, Node.js)**.
 
 ## Features
 
@@ -24,11 +24,11 @@ A full-stack web application for managing car rental operations built with Sprin
 
 ### Customer Management
 - **CRUD operations** — Add, edit, view, and delete customer records
-- **Fields** — Name, email, phone, license number, address
+- **Fields** — First name, last name, email, phone, license number, address
 
 ### Payment Tracking
 - **Auto-created on rental** — Each rental generates a PENDING payment
-- **Status workflow** — Admin can update: PENDING → COMPLETED or FAILED
+- **Status workflow** — Admin can update: PENDING → PAID or FAILED
 - **Full CRUD** — Manual payment entry and management
 
 ### Branch Management
@@ -40,51 +40,64 @@ A full-stack web application for managing car rental operations built with Sprin
 - **Search & filter** — Find cars quickly
 - **Error handling** — User-friendly error messages
 
-## Tech Stack
+## Tech Stack (PERN)
 
 | Layer | Technology |
 |-------|-----------|
-| Backend | Java 17, Spring Boot 3.2.5, Spring Data JPA, Hibernate |
-| Frontend | React 18, React Router 6 |
-| Database | PostgreSQL |
-| Build | Maven (backend), npm (frontend) |
-| Auth | Custom token (in-memory store) |
+| Database | PostgreSQL 14+ (`pg` driver v8) |
+| Backend | Node.js 18+, Express 4, `cors`, `dotenv`, `uuid` |
+| Frontend | React 18, React Router 7, Axios, react-scripts 5 |
+| Auth | Custom token (in-memory store in `backend/middleware/auth.js`) |
+| Build | npm (backend + frontend) |
+
+> Note: legacy Java / Spring Boot code still exists under `backend/src/` + `backend/pom.xml` for reference only. It is **not used**. The active backend is `backend/server.js` (Express).
 
 ## Prerequisites
 
-- Java 17+
 - Node.js 18+
 - PostgreSQL 14+
-- Maven 3.8+
+- npm
+
+No Java / Maven required for the current stack.
 
 ## Setup
 
 ### 1. Database
 
-```sql
-CREATE DATABASE carrental_db;
+The backend auto-creates the database and tables on startup via `backend/config/db.js` (`initDb()`), including seed data (admin + branches + customers + cars).
+
+Just make sure PostgreSQL is running and `backend/.env` credentials are correct:
+
+```env
+PORT=8085
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=carrental_db
+DB_USER=postgres
+DB_PASSWORD=YOUR_PASSWORD
+FRONTEND_ORIGIN=http://localhost:3004
 ```
 
-### 2. Backend Configuration
+For a manual setup, you can also run:
 
-Edit `backend/src/main/resources/application.properties`:
-
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/carrental_db
-spring.datasource.username=postgres
-spring.datasource.password=YOUR_PASSWORD
+```bash
+psql -U postgres -f database/schema.sql
 ```
 
-### 3. Start Backend
+### 2. Start Backend (Express)
 
 ```bash
 cd backend
-mvn spring-boot:run
+npm install
+npm start
+# or for watch mode:
+# npm run dev
 ```
 
 Server starts on `http://localhost:8085`.
+Health check: `GET http://localhost:8085/api/health` → `{ "status": "UP" }`.
 
-### 4. Start Frontend
+### 3. Start Frontend (React)
 
 ```bash
 cd frontend
@@ -92,12 +105,20 @@ npm install
 npm start
 ```
 
-App opens at `http://localhost:3004`.
+App opens at `http://localhost:3004` (see `frontend/.env`).
+
+To build for production:
+
+```bash
+npm run build
+```
 
 ## Default Login
 
 - **Username:** `admin`
 - **Password:** `admin123`
+
+Seeded automatically in `backend/config/db.js` on first run.
 
 ## API Endpoints
 
@@ -118,32 +139,26 @@ App opens at `http://localhost:3004`.
 | GET/POST | `/api/branches` | List / Create branch |
 | GET/PUT/DELETE | `/api/branches/{id}` | Get / Update / Delete branch |
 
-All endpoints except `/api/auth/**` require `Authorization: Bearer <token>` header.
+All endpoints except `/api/auth/**` and `/api/health` require `Authorization: Bearer <token>` header.
 
 ## Project Structure
 
 ```
 backend/
-├── src/main/java/com/oop/carrental/
-│   ├── config/       # CORS, Auth interceptor
-│   ├── controller/   # REST controllers
-│   ├── dto/          # Data transfer objects
-│   ├── entity/       # JPA entities
-│   ├── exception/    # Error handling
-│   ├── repository/   # Data access
-│   └── service/      # Business logic
-└── src/main/resources/
-    └── application.properties
+├── server.js           # Express entry point
+├── config/
+│   └── db.js           # pg Pool + initDb (auto-create tables + seed)
+├── middleware/
+│   └── auth.js         # Token auth middleware (in-memory store)
+├── routes/             # auth, cars, rentals, customers, payments, branches
+├── .env                # PORT, DB_*, FRONTEND_ORIGIN
+└── package.json        # start / dev scripts
 
 frontend/
-├── src/
-│   ├── components/   # React components
-│   ├── App.js       # Main app with routing
-│   ├── api.js       # API client
-│   └── index.js     # Entry point
-└── package.json
+├── build/              # Production build output
+├── .env                # PORT=3004
+└── package.json        # React 18 + react-router-dom + axios + react-scripts
+
+database/
+└── schema.sql          # Manual SQL schema + seed (optional, auto-run otherwise)
 ```
-
-## Screenshots
-
-*(Add screenshots here for your presentation)*
